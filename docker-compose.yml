@@ -1,23 +1,23 @@
 version: '3.1'
 
 volumes:
-  db_data: {}
+  db_data:
 
 services:
   redis:
-    container_name: flask_redis
+    container_name: redis_${REDIS_VERSION:-latest}
     restart: always
-    image: redis:5
+    image: redis:${REDIS_VERSION:-latest}
     volumes:
       - db_data:/data
     ports:
-      - 6379:6379
+      - ${REDIS_PORT:-6379}:6379
   redisCommander:
-    container_name: flask_redis_commander
+    container_name: redis_commander_${REDIS_VERSION:-latest}
     restart: always
     image: tenstartups/redis-commander
     command: --redis-host redis
     links:
       - redis:redis
     ports:
-      - 8081:8081
+      - ${REDIS_COMMANDER_PORT:-8081}:8081
